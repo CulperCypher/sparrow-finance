@@ -5,7 +5,7 @@ import { CONTRACTS } from '../contracts/addresses';
 import { useWallet } from '../contexts/WalletContext';
 
 export function useContract() {
-  const { signer, provider, address, isConnected } = useWallet();
+  const { signer, provider, address } = useWallet();
   const [contract, setContract] = useState<Contract | null>(null);
   const [stats, setStats] = useState({
     totalStaked: '0',
