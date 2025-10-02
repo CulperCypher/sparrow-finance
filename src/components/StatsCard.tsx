@@ -28,9 +28,9 @@ export function StatsCard() {
       <CardContent className="pt-6">
         <div className="grid grid-cols-2 gap-6">
           <Stat 
-            label="APY" 
-            value={`${stats.apy}%`}
-            subvalue="Annual Percentage Yield"
+            label="APR" 
+            value={`${stats.apr}%`}
+            subvalue="Annual Percentage Rate"
           />
           <Stat 
             label="Total Staked" 
