@@ -11,7 +11,7 @@ export function useContract() {
     totalStaked: '0',
     totalSupply: '0',
     exchangeRate: '1.0',
-    apy: '5.1', // Mock APY for now
+    apr: '~5.1', // Mock APY for now
     userBalance: '0',
     userStaked: '0',
   });
@@ -55,7 +55,7 @@ export function useContract() {
         totalStaked: formatEther(contractStats[0]),
         totalSupply: formatEther(contractStats[1]),
         exchangeRate: (Number(formatEther(contractStats[2]))).toFixed(4),
-        apy: '5.1', // Calculate from rewards later
+        apr: '~5.1', // Calculate from rewards later
         userBalance: formatEther(avaxBalance),
         userStaked: formatEther(userBalance),
       });
