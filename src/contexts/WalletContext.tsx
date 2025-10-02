@@ -88,8 +88,10 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     setError('');
 
     try {
+      const accounts = await window.ethereum.request({ 
+        method: 'eth_requestAccounts' 
+      });
       const provider = new BrowserProvider(window.ethereum);
-      const accounts = await provider.send('eth_requestAccounts', []);
       
       if (accounts.length > 0) {
         setAddress(accounts[0]);

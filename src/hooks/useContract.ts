@@ -117,16 +117,22 @@ export function useContract() {
       console.log('Unlock request count:', Number(count));
       const requests = [];
       
+      const now = Math.floor(Date.now() / 1000);
+      
       for (let i = 0; i < Number(count); i++) {
         const request = await contract.getUnlockRequest(address, i);
+        const unlockTime = Number(request[2]);
+        const expiryTime = Number(request[3]);
+        
+        // Use frontend time calculation to avoid caching issues
         requests.push({
           index: i,
           spAvaxAmount: formatEther(request[0]),
           avaxAmount: formatEther(request[1]),
-          unlockTime: Number(request[2]),
-          expiryTime: Number(request[3]),
-          isReady: request[4],
-          isExpired: request[5],
+          unlockTime: unlockTime,
+          expiryTime: expiryTime,
+          isReady: now >= unlockTime,
+          isExpired: now > expiryTime,
         });
       }
       
