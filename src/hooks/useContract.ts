@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Contract, formatEther, parseEther } from 'ethers';
-import { SP_AVAX_ABI } from '../contracts/spAVAX-abi';
+import { spAVAX_ABI } from '../contracts/spAVAX-abi';
 import { CONTRACTS } from '../contracts/addresses';
 import { useWallet } from '../contexts/WalletContext';
 
@@ -21,14 +21,14 @@ export function useContract() {
     if (signer) {
       const contractInstance = new Contract(
         CONTRACTS.fuji.spAVAX,
-        SP_AVAX_ABI,
+        spAVAX_ABI,
         signer
       );
       setContract(contractInstance);
     } else if (provider) {
       const contractInstance = new Contract(
         CONTRACTS.fuji.spAVAX,
-        SP_AVAX_ABI,
+        spAVAX_ABI,
         provider
       );
       setContract(contractInstance);
@@ -69,7 +69,9 @@ export function useContract() {
     
     setLoading(true);
     try {
-      const tx = await contract.stake({ value: parseEther(amount) });
+      // Add 1% slippage tolerance (minSpAvaxOut = 99% of expected)
+      const minSpAvaxOut = 0; // Set to 0 for now, can add slippage calc later
+      const tx = await contract.stake(minSpAvaxOut, { value: parseEther(amount) });
       await tx.wait();
       await loadStats();
       return tx;
@@ -83,7 +85,9 @@ export function useContract() {
     
     setLoading(true);
     try {
-      const tx = await contract.requestUnlock(parseEther(amount));
+      // Add 1% slippage tolerance (minAvaxOut = 99% of expected)
+      const minAvaxOut = 0; // Set to 0 for now, can add slippage calc later
+      const tx = await contract.requestUnlock(parseEther(amount), minAvaxOut);
       await tx.wait();
       await loadStats();
       return tx;

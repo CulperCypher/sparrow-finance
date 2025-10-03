@@ -88,44 +88,42 @@ export default function App() {
                 {activeTab === 'stake' ? <StakingCard /> : <UnstakingCard />}
               </TabsContent>
             </Tabs>
-            
             {isConnected && isCorrectNetwork && <StatsCard />}
           </div>
 
           {/* Info Section */}
           <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="p-6 rounded-lg bg-card border space-y-2">
-              <h3 className="text-lg font-semibold">Liquid Staking</h3>
+            <div className="p-6 rounded-lg bg-muted/50 border space-y-2">
+              <h3 className="text-lg font-semibold text-foreground">Liquid Staking</h3>
               <p className="text-sm text-muted-foreground">
                 Receive spAVAX tokens that represent your staked AVAX, allowing you to use them in DeFi while earning rewards.
               </p>
             </div>
             
-            <div className="p-6 rounded-lg bg-card border space-y-2">
-              <h3 className="text-lg font-semibold">Instant Liquidity</h3>
+            <div className="p-6 rounded-lg bg-muted/50 border space-y-2">
+              <h3 className="text-lg font-semibold text-foreground">Instant Liquidity</h3>
               <p className="text-sm text-muted-foreground">
                 Trade or use your spAVAX across various protocols without waiting for unstaking periods.
               </p>
             </div>
             
-            <div className="p-6 rounded-lg bg-card border space-y-2">
-              <h3 className="text-lg font-semibold">Auto-Compounding</h3>
+            <div className="p-6 rounded-lg bg-muted/50 border space-y-2">
+              <h3 className="text-lg font-semibold text-foreground">Auto-Compounding</h3>
               <p className="text-sm text-muted-foreground">
                 Staking rewards are automatically reinvested, increasing the value of your spAVAX over time.
               </p>
             </div>
           </div>
-
           {/* Contract Info */}
           <div className="mt-12 p-4 rounded-lg bg-muted/50 border">
             <div className="text-center space-y-2">
               <p className="text-sm text-muted-foreground">
-                Contract: <code className="text-xs bg-background px-2 py-1 rounded">0x8F89...69D2</code>
+                Contract: <code className="text-xs bg-background px-2 py-1 rounded">0xd5be2F451C0B1B8cA17Cc64a1f904405B8120c9B</code>
               </p>
               <p className="text-xs text-muted-foreground">
                 Deployed on Avalanche Fuji Testnet • 
                 <a 
-                  href="https://testnet.snowtrace.io/address/0x8F8926A38D03125c448b5EF5f2Edbfc3BE8C69D2" 
+                  href="https://testnet.snowtrace.io/address/0xd5be2F451C0B1B8cA17Cc64a1f904405B8120c9B" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="ml-1 underline hover:text-foreground"

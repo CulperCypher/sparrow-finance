@@ -1,6 +1,6 @@
 export const CONTRACTS = {
   fuji: {
-    spAVAX: '0x8F8926A38D03125c448b5EF5f2Edbfc3BE8C69D2',
+    spAVAX: '0xd5be2F451C0B1B8cA17Cc64a1f904405B8120c9B',
   },
   mainnet: {
     spAVAX: '', // Deploy to mainnet later

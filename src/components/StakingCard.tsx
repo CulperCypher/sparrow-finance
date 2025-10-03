@@ -28,8 +28,8 @@ export function StakingCard() {
       return;
     }
 
-    if (parseFloat(avaxAmount) < 0.1) {
-      toast.error('Minimum stake is 0.1 AVAX');
+    if (parseFloat(avaxAmount) < 0.01) {
+      toast.error('Minimum stake is 0.01 AVAX');
       return;
     }
 
@@ -75,8 +75,8 @@ export function StakingCard() {
                   value={avaxAmount}
                   onChange={(e) => setAvaxAmount(e.target.value)}
                   className="pr-24 h-14 text-lg"
-                  step="0.1"
-                  min="0.1"
+                  step="0.01"
+                  min="0.01"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
                   <Button
