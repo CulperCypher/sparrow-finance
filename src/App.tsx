@@ -72,7 +72,7 @@ export default function App() {
           </div>
 
           {/* Asset Selection */}
-          <div className="flex overflow-x-auto md:grid md:grid-cols-4 gap-4 w-full max-w-5xl mx-auto snap-x snap-mandatory scrollbar-hide pb-4 px-4 md:px-0">
+          <div className="flex overflow-x-auto md:grid md:grid-cols-4 gap-4 mx-auto snap-x snap-mandatory scrollbar-hide pb-4 px-4 md:px-8">
             {/* AVAX Card */}
             <button
               onClick={() => handleAssetChange('avax')}
