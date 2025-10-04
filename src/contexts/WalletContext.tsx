@@ -20,6 +20,8 @@ interface WalletContextType {
   connect: () => Promise<void>;
   disconnect: () => void;
   switchToFuji: () => Promise<void>;
+  switchToBeam: () => Promise<void>;
+  switchNetwork: (chainId: number) => Promise<void>;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -116,30 +118,40 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     setSigner(null);
   };
 
-  const switchToFuji = async () => {
+  const switchNetwork = async (targetChainId: number) => {
     if (!window.ethereum) return;
+
+    const networkConfigs: Record<number, any> = {
+      [CHAIN_IDS.fuji]: {
+        chainId: `0x${CHAIN_IDS.fuji.toString(16)}`,
+        chainName: 'Avalanche Fuji Testnet',
+        nativeCurrency: { name: 'AVAX', symbol: 'AVAX', decimals: 18 },
+        rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
+        blockExplorerUrls: ['https://testnet.snowtrace.io/'],
+      },
+      [CHAIN_IDS.beamTestnet]: {
+        chainId: `0x${CHAIN_IDS.beamTestnet.toString(16)}`,
+        chainName: 'Beam L1 Testnet',
+        nativeCurrency: { name: 'BEAM', symbol: 'BEAM', decimals: 18 },
+        rpcUrls: ['https://build.onbeam.com/rpc/testnet'],
+        blockExplorerUrls: ['https://subnets-test.avax.network/beam'],
+      },
+    };
+
+    const config = networkConfigs[targetChainId];
+    if (!config) return;
 
     try {
       await window.ethereum.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: `0x${CHAIN_IDS.fuji.toString(16)}` }],
+        params: [{ chainId: config.chainId }],
       });
     } catch (error: any) {
       if (error.code === 4902) {
         try {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
-            params: [{
-              chainId: `0x${CHAIN_IDS.fuji.toString(16)}`,
-              chainName: 'Avalanche Fuji Testnet',
-              nativeCurrency: {
-                name: 'AVAX',
-                symbol: 'AVAX',
-                decimals: 18,
-              },
-              rpcUrls: ['https://api.avax-test.network/ext/bc/C/rpc'],
-              blockExplorerUrls: ['https://testnet.snowtrace.io/'],
-            }],
+            params: [config],
           });
         } catch (addError) {
           console.error('Error adding network:', addError);
@@ -147,6 +159,9 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       }
     }
   };
+
+  const switchToFuji = () => switchNetwork(CHAIN_IDS.fuji);
+  const switchToBeam = () => switchNetwork(CHAIN_IDS.beamTestnet);
 
   return (
     <WalletContext.Provider
@@ -162,6 +177,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
         connect,
         disconnect,
         switchToFuji,
+        switchToBeam,
+        switchNetwork,
       }}
     >
       {children}

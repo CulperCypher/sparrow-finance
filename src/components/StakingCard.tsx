@@ -9,34 +9,42 @@ import { useWallet } from '../contexts/WalletContext';
 import { useContract } from '../hooks/useContract';
 import { formatNumber } from '../lib/utils';
 
-export function StakingCard() {
+interface StakingCardProps {
+  asset: 'avax' | 'beam';
+}
+
+export function StakingCard({ asset }: StakingCardProps) {
   const { isConnected, connect, isConnecting } = useWallet();
-  const { stats, stake, loading } = useContract();
-  const [avaxAmount, setAvaxAmount] = useState('');
+  const { stats, stake, loading } = useContract({ asset });
+  const [amount, setAmount] = useState('');
+  
+  // Dynamic labels based on asset
+  const assetName = asset === 'beam' ? 'BEAM' : 'AVAX';
+  const spAssetName = asset === 'beam' ? 'spBEAM' : 'spAVAX';
   
   const exchangeRate = parseFloat(stats.exchangeRate);
-  const spAvaxAmount = avaxAmount ? (parseFloat(avaxAmount) / exchangeRate).toFixed(4) : '0';
+  const spAmount = amount ? (parseFloat(amount) / exchangeRate).toFixed(4) : '0';
 
   const handleStake = async () => {
-    if (!avaxAmount || parseFloat(avaxAmount) <= 0) {
+    if (!amount || parseFloat(amount) <= 0) {
       toast.error('Please enter a valid amount');
       return;
     }
 
-    if (parseFloat(avaxAmount) > parseFloat(stats.userBalance)) {
-      toast.error('Insufficient AVAX balance');
+    if (parseFloat(amount) > parseFloat(stats.userBalance)) {
+      toast.error(`Insufficient ${assetName} balance`);
       return;
     }
 
-    if (parseFloat(avaxAmount) < 0.01) {
-      toast.error('Minimum stake is 0.01 AVAX');
+    if (parseFloat(amount) < 0.01) {
+      toast.error(`Minimum stake is 0.01 ${assetName}`);
       return;
     }
 
     try {
-      await stake(avaxAmount);
-      toast.success(`Successfully staked ${avaxAmount} AVAX for ${spAvaxAmount} spAVAX`);
-      setAvaxAmount('');
+      await stake(amount);
+      toast.success(`Successfully staked ${amount} ${assetName} for ${spAmount} ${spAssetName}`);
+      setAmount('');
     } catch (error: any) {
       toast.error(error.message || 'Failed to stake');
       console.error('Stake error:', error);
@@ -46,15 +54,15 @@ export function StakingCard() {
   const handleMaxClick = () => {
     // Leave a small amount for gas
     const maxAmount = Math.max(0, parseFloat(stats.userBalance) - 0.01);
-    setAvaxAmount(maxAmount.toFixed(4));
+    setAmount(maxAmount.toFixed(4));
   };
 
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Stake AVAX</CardTitle>
+        <CardTitle>Stake {assetName}</CardTitle>
         <CardDescription>
-          Stake your AVAX tokens to receive spAVAX and earn rewards
+          Stake your {assetName} tokens to receive {spAssetName} and earn rewards
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -66,14 +74,14 @@ export function StakingCard() {
         ) : (
           <>
             <div className="space-y-2">
-              <Label htmlFor="avax-input">You stake</Label>
+              <Label htmlFor="asset-input">You stake</Label>
               <div className="relative">
                 <Input
-                  id="avax-input"
+                  id="asset-input"
                   type="number"
                   placeholder="0.0"
-                  value={avaxAmount}
-                  onChange={(e) => setAvaxAmount(e.target.value)}
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
                   className="pr-24 h-14 text-lg"
                   step="0.01"
                   min="0.01"
@@ -89,12 +97,12 @@ export function StakingCard() {
                     MAX
                   </Button>
                   <div className="flex items-center gap-1.5 px-2 py-1 bg-muted rounded">
-                    <span className="text-sm font-medium">AVAX</span>
+                    <span className="text-sm font-medium">{assetName}</span>
                   </div>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
-                Balance: {formatNumber(stats.userBalance, 4)} AVAX
+                Balance: {formatNumber(stats.userBalance, 4)} {assetName}
               </p>
             </div>
 
@@ -105,33 +113,33 @@ export function StakingCard() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="spavax-output">You receive</Label>
+              <Label htmlFor="spasset-output">You receive</Label>
               <div className="relative">
                 <Input
-                  id="spavax-output"
+                  id="spasset-output"
                   type="text"
-                  value={spAvaxAmount}
+                  value={spAmount}
                   readOnly
                   className="pr-28 h-14 bg-muted text-lg"
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2">
                   <div className="flex items-center gap-1.5 px-2 py-1 bg-background rounded">
-                    <span className="text-sm font-medium">spAVAX</span>
+                    <span className="text-sm font-medium">{spAssetName}</span>
                   </div>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
-                Exchange Rate: 1 spAVAX = {stats.exchangeRate} AVAX
+                Exchange Rate: 1 {spAssetName} = {stats.exchangeRate} {assetName}
               </p>
             </div>
 
             <Button
               onClick={handleStake}
-              disabled={loading || !avaxAmount || parseFloat(avaxAmount) <= 0}
+              disabled={loading || !amount || parseFloat(amount) <= 0}
               className="w-full"
               size="lg"
             >
-              {loading ? 'Staking...' : 'Stake AVAX'}
+              {loading ? 'Staking...' : `Stake ${assetName}`}
             </Button>
           </>
         )}

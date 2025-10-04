@@ -20,8 +20,14 @@ function Stat({ label, value, subvalue }: StatProps) {
   );
 }
 
-export function StatsCard() {
-  const { stats } = useContract();
+interface StatsCardProps {
+  asset: 'avax' | 'beam';
+}
+
+export function StatsCard({ asset }: StatsCardProps) {
+  const { stats } = useContract({ asset });
+  const assetName = asset === 'beam' ? 'BEAM' : 'AVAX';
+  const spAssetName = asset === 'beam' ? 'spBEAM' : 'spAVAX';
 
   return (
     <Card className="w-full max-w-md">
@@ -35,17 +41,17 @@ export function StatsCard() {
           <Stat 
             label="Total Staked" 
             value={formatNumber(stats.totalStaked, 2)}
-            subvalue="AVAX"
+            subvalue={assetName}
           />
           <Stat 
             label="Your Staked" 
             value={formatNumber(stats.userStaked, 4)}
-            subvalue="spAVAX"
+            subvalue={spAssetName}
           />
           <Stat 
             label="Your Value" 
             value={formatNumber(parseFloat(stats.userStaked) * parseFloat(stats.exchangeRate), 4)}
-            subvalue="AVAX"
+            subvalue={assetName}
           />
         </div>
       </CardContent>

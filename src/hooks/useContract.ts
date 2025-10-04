@@ -1,11 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Contract, formatEther, parseEther } from 'ethers';
 import { spAVAX_ABI } from '../contracts/spAVAX-abi';
-import { CONTRACTS } from '../contracts/addresses';
+import { CONTRACTS, CHAIN_IDS } from '../contracts/addresses';
 import { useWallet } from '../contexts/WalletContext';
 
-export function useContract() {
-  const { signer, provider, address } = useWallet();
+interface UseContractProps {
+  asset?: 'avax' | 'beam';
+}
+
+export function useContract({ asset = 'avax' }: UseContractProps = {}) {
+  const { signer, provider, address, chainId } = useWallet();
   const [contract, setContract] = useState<Contract | null>(null);
   const [stats, setStats] = useState({
     totalStaked: '0',
@@ -18,22 +22,46 @@ export function useContract() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    // Get contract address and required network based on asset
+    const contractAddress = asset === 'beam' 
+      ? CONTRACTS.beamTestnet.spBEAM 
+      : CONTRACTS.fuji.spAVAX;
+    
+    const requiredChainId = asset === 'beam' ? CHAIN_IDS.beamTestnet : CHAIN_IDS.fuji;
+    
+    // Only create contract if on correct network for this asset
+    // This prevents reading wrong contract data
+    if (chainId !== requiredChainId) {
+      setContract(null);
+      // Reset stats when on wrong network
+      setStats({
+        totalStaked: '0',
+        totalSupply: '0',
+        exchangeRate: '1.0',
+        apr: asset === 'beam' ? '~5.0' : '~5.1',
+        userBalance: '0',
+        userStaked: '0',
+      });
+      return;
+    }
+
+    // Create contract only when on correct network
     if (signer) {
       const contractInstance = new Contract(
-        CONTRACTS.fuji.spAVAX,
-        spAVAX_ABI,
+        contractAddress,
+        spAVAX_ABI, // Same ABI for both spAVAX and spBEAM
         signer
       );
       setContract(contractInstance);
     } else if (provider) {
       const contractInstance = new Contract(
-        CONTRACTS.fuji.spAVAX,
+        contractAddress,
         spAVAX_ABI,
         provider
       );
       setContract(contractInstance);
     }
-  }, [signer, provider]);
+  }, [signer, provider, asset, chainId]);
 
   useEffect(() => {
     if (contract && address) {

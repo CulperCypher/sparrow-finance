@@ -11,8 +11,25 @@ import { useWallet } from './contexts/WalletContext';
 import { formatAddress } from './lib/utils';
 
 export default function App() {
-  const { isConnected, address, disconnect, isCorrectNetwork, switchToFuji } = useWallet();
-  const [selectedAsset, setSelectedAsset] = useState<'avax' | 'strk' | 'btc'>('avax');
+  const { isConnected, address, disconnect, chainId, switchToFuji, switchToBeam } = useWallet();
+  
+  // Persist selected asset across page reloads
+  const [selectedAsset, setSelectedAsset] = useState<'avax' | 'beam' | 'strk' | 'btc'>(() => {
+    const saved = localStorage.getItem('selectedAsset');
+    return (saved as 'avax' | 'beam' | 'strk' | 'btc') || 'avax';
+  });
+  
+  // Save to localStorage whenever selection changes
+  const handleAssetChange = (asset: 'avax' | 'beam' | 'strk' | 'btc') => {
+    setSelectedAsset(asset);
+    localStorage.setItem('selectedAsset', asset);
+  };
+  
+  // Determine correct network based on selected asset
+  const requiredChainId = selectedAsset === 'beam' ? 13337 : 43113;
+  const isCorrectNetwork = chainId === requiredChainId;
+  const switchNetwork = selectedAsset === 'beam' ? switchToBeam : switchToFuji;
+  const networkName = selectedAsset === 'beam' ? 'Beam L1 Testnet' : 'Avalanche Fuji Testnet';
   const [activeTab, setActiveTab] = useState<'stake' | 'unstake'>('stake');
 
   return (
@@ -41,20 +58,7 @@ export default function App() {
         </div>
       </header>
 
-      {/* Wrong Network Warning */}
-      {isConnected && !isCorrectNetwork && (
-        <div className="bg-destructive/10 border-b border-destructive/20">
-          <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-            <div className="flex items-center gap-2 text-sm">
-              <AlertCircle className="h-4 w-4 text-destructive" />
-              <span>Please switch to Avalanche Fuji Testnet</span>
-            </div>
-            <Button size="sm" onClick={switchToFuji}>
-              Switch Network
-            </Button>
-          </div>
-        </div>
-      )}
+      {/* Wrong Network Warning - Removed from header, moved below */}
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-12">
@@ -68,10 +72,10 @@ export default function App() {
           </div>
 
           {/* Asset Selection */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {/* AVAX Card */}
             <button
-              onClick={() => setSelectedAsset('avax')}
+              onClick={() => handleAssetChange('avax')}
               className={`p-6 rounded-lg border-2 transition-all hover:scale-105 ${
                 selectedAsset === 'avax' 
                   ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
@@ -93,12 +97,15 @@ export default function App() {
                     <span className="text-xs bg-[#D4AF37] text-black px-2 py-1 rounded">Selected</span>
                   </div>
                 )}
+                <div className="pt-2">
+                  <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Testnet Live</span>
+                </div>
               </div>
             </button>
 
             {/* STRK Card */}
             <button
-              onClick={() => setSelectedAsset('strk')}
+              onClick={() => handleAssetChange('strk')}
               className={`p-6 rounded-lg border-2 transition-all hover:scale-105 ${
                 selectedAsset === 'strk' 
                   ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
@@ -126,9 +133,39 @@ export default function App() {
               </div>
             </button>
 
+            {/* BEAM Card */}
+            <button
+              onClick={() => handleAssetChange('beam')}
+              className={`p-6 rounded-lg border-2 transition-all hover:scale-105 ${
+                selectedAsset === 'beam' 
+                  ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
+                  : 'border-border bg-card hover:border-[#D4AF37]/50'
+              }`}
+            >
+              <div className="text-center space-y-3">
+                <div className="flex justify-center">
+                  <img src="/onbeam-beam-logo.png" alt="Beam" className="h-12 w-12" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">BEAM</h3>
+                <p className="text-sm text-muted-foreground">Beam Testnet</p>
+                <div className="pt-2 border-t">
+                  <p className="text-xs text-muted-foreground">APY</p>
+                  <p className="text-lg font-semibold text-[#D4AF37]">~5.0%</p>
+                </div>
+                {selectedAsset === 'beam' && (
+                  <div className="pt-2">
+                    <span className="text-xs bg-[#D4AF37] text-black px-2 py-1 rounded">Selected</span>
+                  </div>
+                )}
+                <div className="pt-2">
+                  <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded">Testnet Live</span>
+                </div>
+              </div>
+            </button>
+
             {/* BTC Card */}
             <button
-              onClick={() => setSelectedAsset('btc')}
+              onClick={() => handleAssetChange('btc')}
               className={`p-6 rounded-lg border-2 transition-all hover:scale-105 ${
                 selectedAsset === 'btc' 
                   ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
@@ -159,15 +196,30 @@ export default function App() {
 
           {/* Staking Interface - Dynamic based on selected asset */}
           <div className="flex flex-col items-center gap-6">
-            {selectedAsset === 'avax' && (
+            {(selectedAsset === 'avax' || selectedAsset === 'beam') && (
               <>
+                {/* Network Warning - Right above staking card */}
+                {isConnected && !isCorrectNetwork && (
+                  <div className="w-full max-w-md bg-destructive/10 border border-destructive/20 rounded-lg p-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm">
+                        <AlertCircle className="h-4 w-4 text-destructive" />
+                        <span className="text-[#D4AF37]">Please switch to {networkName}</span>
+                      </div>
+                      <Button size="sm" onClick={switchNetwork}>
+                        Switch Network
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                
                 <Tabs className="w-full max-w-md">
                   <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger
                       active={activeTab === 'stake'}
                       onClick={() => setActiveTab('stake')}
                     >
-                      Stake AVAX
+                      Stake {selectedAsset === 'beam' ? 'BEAM' : 'AVAX'}
                     </TabsTrigger>
                     <TabsTrigger
                       active={activeTab === 'unstake'}
@@ -178,11 +230,11 @@ export default function App() {
                   </TabsList>
                   
                   <TabsContent>
-                    {activeTab === 'stake' && <StakingCard />}
-                    {activeTab === 'unstake' && <UnstakingCard />}
+                    {activeTab === 'stake' && <StakingCard asset={selectedAsset} />}
+                    {activeTab === 'unstake' && <UnstakingCard asset={selectedAsset} />}
                   </TabsContent>
                 </Tabs>
-                {isConnected && isCorrectNetwork && <StatsCard />}
+                {isConnected && <StatsCard asset={selectedAsset} />}
               </>
             )}
 

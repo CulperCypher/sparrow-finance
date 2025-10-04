@@ -19,9 +19,16 @@ interface UnlockRequest {
   isExpired: boolean;
 }
 
-export function UnstakingCard() {
+interface UnstakingCardProps {
+  asset: 'avax' | 'beam';
+}
+
+export function UnstakingCard({ asset }: UnstakingCardProps) {
+  // Dynamic labels based on asset
+  const assetName = asset === 'beam' ? 'BEAM' : 'AVAX';
+  const spAssetName = asset === 'beam' ? 'spBEAM' : 'spAVAX';
   const { isConnected, connect, isConnecting } = useWallet();
-  const { stats, requestUnlock, claimUnlock, getUnlockRequests, loading } = useContract();
+  const { stats, requestUnlock, claimUnlock, getUnlockRequests, loading } = useContract({ asset });
   const [spAvaxAmount, setSpAvaxAmount] = useState('');
   const [unlockRequests, setUnlockRequests] = useState<UnlockRequest[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -55,13 +62,13 @@ export function UnstakingCard() {
     }
 
     if (parseFloat(spAvaxAmount) > parseFloat(stats.userStaked)) {
-      toast.error('Insufficient spAVAX balance');
+      toast.error(`Insufficient ${spAssetName} balance`);
       return;
     }
 
     try {
       await requestUnlock(spAvaxAmount);
-      toast.success(`Unlock requested for ${spAvaxAmount} spAVAX. Wait 60 seconds to claim.`);
+      toast.success(`Unlock requested for ${spAvaxAmount} ${spAssetName}. Wait 60 seconds to claim.`);
       setSpAvaxAmount('');
       await loadUnlockRequests();
     } catch (error: any) {
@@ -73,7 +80,7 @@ export function UnstakingCard() {
   const handleClaimUnlock = async (index: number, avaxAmount: string) => {
     try {
       await claimUnlock(index);
-      toast.success(`Successfully claimed ${avaxAmount} AVAX!`);
+      toast.success(`Successfully claimed ${avaxAmount} ${assetName}!`);
       await loadUnlockRequests();
     } catch (error: any) {
       toast.error(error.message || 'Failed to claim unlock');
@@ -120,9 +127,9 @@ export function UnstakingCard() {
       {/* Request Unlock Card */}
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Unstake spAVAX</CardTitle>
+          <CardTitle>Unstake {spAssetName}</CardTitle>
           <CardDescription>
-            Request to unstake your spAVAX. Wait 60 seconds, then claim your AVAX.
+            Request to unstake your {spAssetName}. Wait 60 seconds, then claim your {assetName}.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -134,10 +141,10 @@ export function UnstakingCard() {
           ) : (
             <>
           <div className="space-y-2">
-            <Label htmlFor="spavax-input">Amount to unstake</Label>
+            <Label htmlFor="spasset-input">Amount to unstake</Label>
             <div className="relative">
               <Input
-                id="spavax-input"
+                id="spasset-input"
                 type="number"
                 placeholder="0.0"
                 value={spAvaxAmount}
@@ -157,18 +164,18 @@ export function UnstakingCard() {
                   MAX
                 </Button>
                 <div className="flex items-center gap-1.5 px-2 py-1 bg-muted rounded">
-                  <span className="text-sm font-medium">spAVAX</span>
+                  <span className="text-sm font-medium">{spAssetName}</span>
                 </div>
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
-              Balance: {formatNumber(stats.userStaked, 4)} spAVAX
+              Balance: {formatNumber(stats.userStaked, 4)} {spAssetName}
             </p>
           </div>
 
           <div className="p-4 rounded-lg bg-muted/50 space-y-1">
             <p className="text-sm text-muted-foreground">You will receive</p>
-            <p className="text-2xl font-bold">{avaxAmount} AVAX</p>
+            <p className="text-2xl font-bold">{avaxAmount} {assetName}</p>
             <p className="text-xs text-muted-foreground">
               After 60 second unlock period
             </p>
@@ -217,10 +224,10 @@ export function UnstakingCard() {
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
                     <p className="font-medium">
-                      {formatNumber(request.avaxAmount, 4)} AVAX
+                      {formatNumber(request.avaxAmount, 4)} {assetName}
                     </p>
                     <p className="text-sm text-muted-foreground">
-                      {formatNumber(request.spAvaxAmount, 4)} spAVAX
+                      {formatNumber(request.spAvaxAmount, 4)} {spAssetName}
                     </p>
                   </div>
                   
@@ -266,7 +273,7 @@ export function UnstakingCard() {
                   {request.isExpired
                     ? 'Expired'
                     : request.isReady
-                    ? 'Claim AVAX'
+                    ? `Claim ${assetName}`
                     : 'Waiting...'}
                 </Button>
               </div>
