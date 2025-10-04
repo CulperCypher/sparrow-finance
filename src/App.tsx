@@ -72,11 +72,11 @@ export default function App() {
           </div>
 
           {/* Asset Selection */}
-          <div className="flex overflow-x-auto md:grid md:grid-cols-4 gap-4 max-w-4xl mx-auto snap-x snap-mandatory scrollbar-hide pb-4">
+          <div className="flex overflow-x-auto md:grid md:grid-cols-4 gap-4 w-full max-w-5xl mx-auto snap-x snap-mandatory scrollbar-hide pb-4 px-4 md:px-0">
             {/* AVAX Card */}
             <button
               onClick={() => handleAssetChange('avax')}
-              className={`flex-shrink-0 w-[280px] md:w-auto p-6 rounded-lg border-2 transition-all hover:scale-105 snap-center ${
+              className={`flex-shrink-0 w-[280px] md:w-auto p-6 rounded-lg border-2 transition-all md:hover:scale-105 snap-center ${
                 selectedAsset === 'avax' 
                   ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
                   : 'border-border bg-card hover:border-[#D4AF37]/50'
@@ -106,7 +106,7 @@ export default function App() {
             {/* STRK Card */}
             <button
               onClick={() => handleAssetChange('strk')}
-              className={`flex-shrink-0 w-[280px] md:w-auto p-6 rounded-lg border-2 transition-all hover:scale-105 snap-center ${
+              className={`flex-shrink-0 w-[280px] md:w-auto p-6 rounded-lg border-2 transition-all md:hover:scale-105 snap-center ${
                 selectedAsset === 'strk' 
                   ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
                   : 'border-border bg-card hover:border-[#D4AF37]/50'
@@ -136,7 +136,7 @@ export default function App() {
             {/* BEAM Card */}
             <button
               onClick={() => handleAssetChange('beam')}
-              className={`flex-shrink-0 w-[280px] md:w-auto p-6 rounded-lg border-2 transition-all hover:scale-105 snap-center ${
+              className={`flex-shrink-0 w-[280px] md:w-auto p-6 rounded-lg border-2 transition-all md:hover:scale-105 snap-center ${
                 selectedAsset === 'beam' 
                   ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
                   : 'border-border bg-card hover:border-[#D4AF37]/50'
@@ -166,7 +166,7 @@ export default function App() {
             {/* BTC Card */}
             <button
               onClick={() => handleAssetChange('btc')}
-              className={`flex-shrink-0 w-[280px] md:w-auto p-6 rounded-lg border-2 transition-all hover:scale-105 snap-center ${
+              className={`flex-shrink-0 w-[280px] md:w-auto p-6 rounded-lg border-2 transition-all md:hover:scale-105 snap-center ${
                 selectedAsset === 'btc' 
                   ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
                   : 'border-border bg-card hover:border-[#D4AF37]/50'
