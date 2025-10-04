@@ -41,7 +41,7 @@ export default function App() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center">
-              <img src="/Golden Sparrow Logo Design.png" alt="Sparrow Finance" className="h-10 w-10" />
+            <img src="/Golden Sparrow Logo Design.png" alt="Sparrow Finance" className="h-10 w-10 rounded-full bg-black p-1" />
             </div>
             <div>
               <h1 className="text-xl font-bold text-[#D4AF37]">Sparrow Finance</h1>
