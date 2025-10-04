@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StakingCard } from './components/StakingCard';
 import { UnstakingCard } from './components/UnstakingCard';
 import { StatsCard } from './components/StatsCard';
+// import { BridgeBTC } from './components/BridgeBTC'; // Temporarily disabled until GardenProvider is set up
 import { Button } from './components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './components/ui/tabs';
 import { Toaster } from './components/ui/sonner';
@@ -11,6 +12,7 @@ import { formatAddress } from './lib/utils';
 
 export default function App() {
   const { isConnected, address, disconnect, isCorrectNetwork, switchToFuji } = useWallet();
+  const [selectedAsset, setSelectedAsset] = useState<'avax' | 'strk' | 'btc'>('avax');
   const [activeTab, setActiveTab] = useState<'stake' | 'unstake'>('stake');
 
   return (
@@ -59,36 +61,180 @@ export default function App() {
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Hero Section */}
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold text-[#999999]">Stake AVAX, Earn Rewards</h2>
+            <h2 className="text-4xl font-bold text-[#999999]">Multi-Chain Liquid Staking</h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Stake your AVAX tokens to receive spAVAX while earning staking rewards. 
-              Your spAVAX can be used across DeFi protocols while continuing to accrue value.
+              Stake your assets across multiple chains and earn rewards while maintaining liquidity.
             </p>
           </div>
 
-          {/* Staking Interface */}
+          {/* Asset Selection */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            {/* AVAX Card */}
+            <button
+              onClick={() => setSelectedAsset('avax')}
+              className={`p-6 rounded-lg border-2 transition-all hover:scale-105 ${
+                selectedAsset === 'avax' 
+                  ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
+                  : 'border-border bg-card hover:border-[#D4AF37]/50'
+              }`}
+            >
+              <div className="text-center space-y-3">
+                <div className="flex justify-center">
+                  <img src="/avalanche-avax-logo (1).png" alt="Avalanche" className="h-12 w-12" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">AVAX</h3>
+                <p className="text-sm text-muted-foreground">Avalanche</p>
+                <div className="pt-2 border-t">
+                  <p className="text-xs text-muted-foreground">APY</p>
+                  <p className="text-lg font-semibold text-[#D4AF37]">~5.1%</p>
+                </div>
+                {selectedAsset === 'avax' && (
+                  <div className="pt-2">
+                    <span className="text-xs bg-[#D4AF37] text-black px-2 py-1 rounded">Selected</span>
+                  </div>
+                )}
+              </div>
+            </button>
+
+            {/* STRK Card */}
+            <button
+              onClick={() => setSelectedAsset('strk')}
+              className={`p-6 rounded-lg border-2 transition-all hover:scale-105 ${
+                selectedAsset === 'strk' 
+                  ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
+                  : 'border-border bg-card hover:border-[#D4AF37]/50'
+              }`}
+            >
+              <div className="text-center space-y-3">
+                <div className="flex justify-center">
+                  <img src="/starknet-token-strk-logo.png" alt="Starknet" className="h-12 w-12" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">STRK</h3>
+                <p className="text-sm text-muted-foreground">Starknet</p>
+                <div className="pt-2 border-t">
+                  <p className="text-xs text-muted-foreground">APY</p>
+                  <p className="text-lg font-semibold text-[#D4AF37]">~8.2%</p>
+                </div>
+                {selectedAsset === 'strk' && (
+                  <div className="pt-2">
+                    <span className="text-xs bg-[#D4AF37] text-black px-2 py-1 rounded">Selected</span>
+                  </div>
+                )}
+                <div className="pt-2">
+                  <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">Coming Soon</span>
+                </div>
+              </div>
+            </button>
+
+            {/* BTC Card */}
+            <button
+              onClick={() => setSelectedAsset('btc')}
+              className={`p-6 rounded-lg border-2 transition-all hover:scale-105 ${
+                selectedAsset === 'btc' 
+                  ? 'border-[#D4AF37] bg-[#D4AF37]/10' 
+                  : 'border-border bg-card hover:border-[#D4AF37]/50'
+              }`}
+            >
+              <div className="text-center space-y-3">
+                <div className="flex justify-center">
+                  <img src="/bitcoin-btc-logo.png" alt="Bitcoin" className="h-12 w-12" />
+                </div>
+                <h3 className="text-xl font-semibold text-foreground">Bitcoin</h3>
+                <p className="text-sm text-muted-foreground">→ Starknet</p>
+                <div className="pt-2 border-t">
+                  <p className="text-xs text-muted-foreground">Rewards</p>
+                  <p className="text-lg font-semibold text-[#D4AF37]">STRK</p>
+                </div>
+                {selectedAsset === 'btc' && (
+                  <div className="pt-2">
+                    <span className="text-xs bg-[#D4AF37] text-black px-2 py-1 rounded">Selected</span>
+                  </div>
+                )}
+                <div className="pt-2">
+                  <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded">Coming Soon</span>
+                </div>
+              </div>
+            </button>
+          </div>
+
+          {/* Staking Interface - Dynamic based on selected asset */}
           <div className="flex flex-col items-center gap-6">
-            <Tabs className="w-full max-w-md">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger
-                  active={activeTab === 'stake'}
-                  onClick={() => setActiveTab('stake')}
-                >
-                  Stake
-                </TabsTrigger>
-                <TabsTrigger
-                  active={activeTab === 'unstake'}
-                  onClick={() => setActiveTab('unstake')}
-                >
-                  Unstake
-                </TabsTrigger>
-              </TabsList>
-              
-              <TabsContent>
-                {activeTab === 'stake' ? <StakingCard /> : <UnstakingCard />}
-              </TabsContent>
-            </Tabs>
-            {isConnected && isCorrectNetwork && <StatsCard />}
+            {selectedAsset === 'avax' && (
+              <>
+                <Tabs className="w-full max-w-md">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger
+                      active={activeTab === 'stake'}
+                      onClick={() => setActiveTab('stake')}
+                    >
+                      Stake AVAX
+                    </TabsTrigger>
+                    <TabsTrigger
+                      active={activeTab === 'unstake'}
+                      onClick={() => setActiveTab('unstake')}
+                    >
+                      Unstake
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent>
+                    {activeTab === 'stake' && <StakingCard />}
+                    {activeTab === 'unstake' && <UnstakingCard />}
+                  </TabsContent>
+                </Tabs>
+                {isConnected && isCorrectNetwork && <StatsCard />}
+              </>
+            )}
+
+            {selectedAsset === 'strk' && (
+              <div className="w-full max-w-md p-8 rounded-lg border bg-card text-center">
+                <h3 className="text-xl font-semibold text-foreground mb-3">STRK Staking Coming Soon!</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Stake STRK tokens on Starknet to receive spSTRK and earn staking rewards.
+                </p>
+                <div className="space-y-2 text-left">
+                  <div className="flex items-center gap-2 text-sm text-foreground">
+                    <span className="text-green-500">✓</span>
+                    <span>Liquid staking on Starknet</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-foreground">
+                    <span className="text-green-500">✓</span>
+                    <span>Earn ~8.2% APY in STRK</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-foreground">
+                    <span className="text-green-500">✓</span>
+                    <span>Use spSTRK in DeFi</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {selectedAsset === 'btc' && (
+              <div className="w-full max-w-md p-8 rounded-lg border bg-card text-center">
+                <h3 className="text-xl font-semibold text-foreground mb-3">Bitcoin Staking Coming Soon!</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Bridge your Bitcoin to Starknet and stake to earn STRK rewards.
+                </p>
+                <div className="space-y-2 text-left">
+                  <div className="flex items-center gap-2 text-sm text-foreground">
+                    <span className="text-green-500">✓</span>
+                    <span>Bridge BTC → WBTC (Starknet)</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-foreground">
+                    <span className="text-green-500">✓</span>
+                    <span>Stake WBTC → spBTC</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-foreground">
+                    <span className="text-green-500">✓</span>
+                    <span>Earn STRK rewards</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-foreground">
+                    <span className="text-green-500">✓</span>
+                    <span>100M STRK incentive program</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Info Section */}
