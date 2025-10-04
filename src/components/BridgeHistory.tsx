@@ -1,32 +1,24 @@
-import { ParseOrderStatus } from '@gardenfi/core';
-import { useGarden } from '@gardenfi/react-hooks';
-import { useEffect, useState } from 'react';
+// Temporarily disabled - will be enabled when Garden SDK is fully integrated
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
-import { Loader2, CheckCircle2, XCircle, Clock, RefreshCw } from 'lucide-react';
-
-interface Order {
-  orderId: string;
-  fromAsset: string;
-  toAsset: string;
-  sendAmount: string;
-  receiveAmount: string;
-  timestamp: number;
-  status?: string;
-}
 
 export function BridgeHistory() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [blockNumbers, setBlockNumbers] = useState<any>(null);
-  const { getOrders } = useGarden();
+  // Stub component - will be implemented when Garden SDK is integrated
+  return (
+    <Card className="w-full max-w-md">
+      <CardHeader>
+        <CardTitle>Bridge History</CardTitle>
+        <CardDescription>Track your bridge transactions</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground text-center py-8">
+          No bridge transactions yet
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
 
-  useEffect(() => {
-    loadOrders();
-    const interval = setInterval(loadOrders, 30000); // Refresh every 30 seconds
-    return () => clearInterval(interval);
-  }, []);
-
-  const loadOrders = async () => {
+/* OLD CODE - WILL BE RESTORED WHEN GARDEN SDK IS INTEGRATED
     if (!getOrders) return;
 
     try {
@@ -36,8 +28,8 @@ export function BridgeHistory() {
         const ordersWithStatus = ordersResult.val.map((order: any) => {
           const status = ParseOrderStatus(
             order,
-            blockNumbers?.val?.[order.source_swap.chain],
-            blockNumbers?.val?.[order.destination_swap.chain]
+            null,
+            null
           );
           
           return {
@@ -179,3 +171,4 @@ export function BridgeHistory() {
     </Card>
   );
 }
+*/

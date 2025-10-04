@@ -50,8 +50,8 @@ export function BridgeBTC() {
         isExactOut: false,
       });
 
-      if (!quoteResult.ok) {
-        toast.error(`Failed to get quote: ${quoteResult.error}`);
+      if (!quoteResult.ok || !quoteResult.val) {
+        toast.error(`Failed to get quote: ${quoteResult.ok ? 'No data' : quoteResult.error}`);
         return;
       }
 
@@ -105,7 +105,6 @@ export function BridgeBTC() {
         receiveAmount: quote.quoteAmount,
         additionalData: {
           btcAddress,
-          starknetAddress,
           strategyId: quote.strategyId,
         },
       });
