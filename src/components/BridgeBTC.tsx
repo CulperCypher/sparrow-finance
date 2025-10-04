@@ -50,8 +50,8 @@ export function BridgeBTC() {
         isExactOut: false,
       });
 
-      if (!quoteResult.ok || !quoteResult.val) {
-        toast.error(`Failed to get quote: ${quoteResult.ok ? 'No data' : quoteResult.error}`);
+      if (!quoteResult || !quoteResult.ok || !quoteResult.val) {
+        toast.error(`Failed to get quote: ${quoteResult?.ok ? 'No data' : quoteResult?.error || 'Unknown error'}`);
         return;
       }
 
