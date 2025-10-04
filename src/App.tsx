@@ -316,10 +316,24 @@ export default function App() {
           <div className="mt-12 p-4 rounded-lg bg-muted/50 border">
             <div className="text-center space-y-2">
               <p className="text-sm text-muted-foreground">
-                Contract: <code className="text-xs bg-background px-2 py-1 rounded">0xd5be2F451C0B1B8cA17Cc64a1f904405B8120c9B</code>
+                spAVAX Contract: <code className="text-xs bg-background px-2 py-1 rounded">0xd5be2F451C0B1B8cA17Cc64a1f904405B8120c9B</code>
+              </p>
+              <p className="text-sm text-muted-foreground">
+                spBEAM Contract: <code className="text-xs bg-background px-2 py-1 rounded">0x21e9726d777400c5dcBF65cF595125B21359A1DD</code>
               </p>
               <p className="text-xs text-muted-foreground">
-                Deployed on Avalanche Fuji Testnet • 
+                spAVAX Deployed on Avalanche Fuji Testnet • 
+                <a 
+                  href="https://testnet.snowtrace.io/address/0xd5be2F451C0B1B8cA17Cc64a1f904405B8120c9B" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="ml-1 underline hover:text-foreground"
+                >
+                  View on Snowtrace
+                </a>
+              </p>
+              <p className="text-xs text-muted-foreground">
+                spBEAM Deployed on BEAM Testnet • 
                 <a 
                   href="https://testnet.snowtrace.io/address/0xd5be2F451C0B1B8cA17Cc64a1f904405B8120c9B" 
                   target="_blank" 
