@@ -89,7 +89,7 @@ export default function App() {
                 <h3 className="text-xl font-semibold text-foreground">AVAX</h3>
                 <p className="text-sm text-muted-foreground">Avalanche</p>
                 <div className="pt-2 border-t">
-                  <p className="text-xs text-muted-foreground">APY</p>
+                  <p className="text-xs text-muted-foreground">Network Rewards</p>
                   <p className="text-lg font-semibold text-[#D4AF37]">~5.1%</p>
                 </div>
                 {selectedAsset === 'avax' && (
@@ -119,7 +119,7 @@ export default function App() {
                 <h3 className="text-xl font-semibold text-foreground">STRK</h3>
                 <p className="text-sm text-muted-foreground">Starknet</p>
                 <div className="pt-2 border-t">
-                  <p className="text-xs text-muted-foreground">APY</p>
+                  <p className="text-xs text-muted-foreground">Network Rewards</p>
                   <p className="text-lg font-semibold text-[#D4AF37]">~8.2%</p>
                 </div>
                 {selectedAsset === 'strk' && (
@@ -149,7 +149,7 @@ export default function App() {
                 <h3 className="text-xl font-semibold text-foreground">BEAM</h3>
                 <p className="text-sm text-muted-foreground">Beam Testnet</p>
                 <div className="pt-2 border-t">
-                  <p className="text-xs text-muted-foreground">APY</p>
+                  <p className="text-xs text-muted-foreground">Network Rewards</p>
                   <p className="text-lg font-semibold text-[#D4AF37]">~5.0%</p>
                 </div>
                 {selectedAsset === 'beam' && (
@@ -251,7 +251,7 @@ export default function App() {
                   </div>
                   <div className="flex items-center gap-2 text-sm text-foreground">
                     <span className="text-green-500">✓</span>
-                    <span>Earn ~8.2% APY in STRK</span>
+                    <span>Earn ~8.2% Network Rewards in STRK</span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-foreground">
                     <span className="text-green-500">✓</span>

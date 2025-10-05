@@ -34,9 +34,9 @@ export function StatsCard({ asset }: StatsCardProps) {
       <CardContent className="pt-6">
         <div className="grid grid-cols-2 gap-6">
           <Stat 
-            label="APR" 
+            label="Rewards" 
             value={`${stats.apr}%`}
-            subvalue="Annual Percentage Rate"
+            subvalue="Network Rewards"
           />
           <Stat 
             label="Total Staked" 
