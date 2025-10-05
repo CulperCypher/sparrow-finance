@@ -180,7 +180,7 @@ export default function App() {
                 <p className="text-sm text-muted-foreground">→ Starknet</p>
                 <div className="pt-2 border-t">
                   <p className="text-xs text-muted-foreground">Rewards</p>
-                  <p className="text-lg font-semibold text-[#D4AF37]">STRK</p>
+                  <p className="text-lg font-semibold text-[#D4AF37]">4.2% STRK</p>
                 </div>
                 {selectedAsset === 'btc' && (
                   <div className="pt-2">
