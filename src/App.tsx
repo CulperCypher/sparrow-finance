@@ -49,12 +49,20 @@ export default function App() {
             </div>
           </div>
           
-          {isConnected && (
-            <Button variant="outline" onClick={disconnect} className="text-[#D4AF37] border-[#D4AF37] hover:bg-[#D4AF37]/10">
-              <LogOut className="mr-2 h-4 w-4" />
-              {formatAddress(address)}
-            </Button>
-          )}
+          <div className="flex items-center gap-3">
+            <a 
+              href="https://app.sparrowfinance.xyz" 
+              className="text-[#D4AF37] hover:underline text-sm font-medium"
+            >
+              Swap Tokens →
+            </a>
+            {isConnected && (
+              <Button variant="outline" onClick={disconnect} className="text-[#D4AF37] border-[#D4AF37] hover:bg-[#D4AF37]/10">
+                <LogOut className="mr-2 h-4 w-4" />
+                {formatAddress(address)}
+              </Button>
+            )}
+          </div>
         </div>
       </header>
 
