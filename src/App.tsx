@@ -187,7 +187,7 @@ export default function App() {
                 <h3 className="text-xl font-semibold text-foreground">Bitcoin</h3>
                 <p className="text-sm text-muted-foreground">→ Starknet</p>
                 <div className="pt-2 border-t">
-                  <p className="text-xs text-muted-foreground">Rewards</p>
+                  <p className="text-xs text-muted-foreground">Network Rewards</p>
                   <p className="text-lg font-semibold text-[#D4AF37]">4.2% STRK</p>
                 </div>
                 {selectedAsset === 'btc' && (
@@ -302,21 +302,21 @@ export default function App() {
             <div className="p-6 rounded-lg bg-muted/50 border space-y-2">
               <h3 className="text-lg font-semibold text-foreground">Liquid Staking</h3>
               <p className="text-sm text-muted-foreground">
-                Receive spAVAX tokens that represent your staked AVAX, allowing you to use them in DeFi while earning rewards.
+                Receive liquid staking tokens (spAVAX, spBEAM) that represent your staked assets, allowing you to use them in DeFi while earning rewards.
               </p>
             </div>
             
             <div className="p-6 rounded-lg bg-muted/50 border space-y-2">
               <h3 className="text-lg font-semibold text-foreground">Instant Liquidity</h3>
               <p className="text-sm text-muted-foreground">
-                Trade or use your spAVAX across various protocols without waiting for unstaking periods.
+                Trade or use your liquid staking tokens across various protocols without waiting for unstaking periods.
               </p>
             </div>
             
             <div className="p-6 rounded-lg bg-muted/50 border space-y-2">
               <h3 className="text-lg font-semibold text-foreground">Auto-Compounding</h3>
               <p className="text-sm text-muted-foreground">
-                Staking rewards are automatically reinvested, increasing the value of your spAVAX over time.
+                Staking rewards are automatically reinvested, increasing the value of your liquid staking tokens over time.
               </p>
             </div>
           </div>
@@ -343,12 +343,12 @@ export default function App() {
               <p className="text-xs text-muted-foreground">
                 spBEAM Deployed on BEAM Testnet • 
                 <a 
-                  href="https://testnet.snowtrace.io/address/0xd5be2F451C0B1B8cA17Cc64a1f904405B8120c9B" 
+                  href="https://subnets-test.avax.network/beam/address/0x21e9726d777400c5dcBF65cF595125B21359A1DD" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="ml-1 underline hover:text-foreground"
                 >
-                  View on Snowtrace
+                  View on Explorer
                 </a>
               </p>
             </div>
