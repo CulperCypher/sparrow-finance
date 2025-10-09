@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
-import { ArrowDownUp, Wallet } from 'lucide-react';
+import { ArrowDownUp, Wallet, Info } from 'lucide-react';
 import { toast } from 'sonner';
 import { useWallet } from '../contexts/WalletContext';
 import { useContract } from '../hooks/useContract';
@@ -136,6 +136,24 @@ export function StakingCard({ asset }: StakingCardProps) {
                 Exchange Rate: 1 {spAssetName} = {stats.exchangeRate} {assetName}
               </p>
             </div>
+            
+            {asset === 'beam' && (
+              <div className="flex items-start gap-2 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <Info className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                <p className="text-xs text-blue-400">
+                  Treasury rewards (ATH or other assets) are automatically converted to BEAM and added to the pool, increasing spBEAM value.
+                </p>
+              </div>
+            )}
+
+            {asset === 'beam' && (
+              <div className="flex items-start gap-2 p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                <Info className="h-4 w-4 text-blue-400 mt-0.5 flex-shrink-0" />
+                <p className="text-xs text-blue-400">
+                  Treasury rewards (ATH or other assets) are automatically converted to BEAM and added to the pool, increasing spBEAM value.
+                </p>
+              </div>
+            )}
 
             <Button
               onClick={handleStake}
