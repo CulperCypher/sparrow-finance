@@ -45,7 +45,7 @@ export default function App() {
             </div>
             <div>
               <h1 className="text-xl font-bold text-[#D4AF37]">Sparrow Finance</h1>
-              <p className="text-sm text-[#D4AF37]">Sparrow Finance Liquid Staking</p>
+              <p className="text-sm text-[#D4AF37]">Liquid Staking Protocol</p>
             </div>
           </div>
           

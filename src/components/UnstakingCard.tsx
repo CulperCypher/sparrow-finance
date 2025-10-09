@@ -131,7 +131,7 @@ export function UnstakingCard({ asset }: UnstakingCardProps) {
         <CardHeader>
           <CardTitle>Unstake {spAssetName}</CardTitle>
           <CardDescription>
-            Request to unstake your {spAssetName}. Wait 60 seconds, then claim your {assetName}.
+            Unstake your {spAssetName} and receive {assetName}. 60 second waiting period.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
