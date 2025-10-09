@@ -21,6 +21,8 @@ export function StakingCard({ asset }: StakingCardProps) {
   // Dynamic labels based on asset
   const assetName = asset === 'beam' ? 'BEAM' : 'AVAX';
   const spAssetName = asset === 'beam' ? 'spBEAM' : 'spAVAX';
+  const assetLogo = asset === 'beam' ? '/onbeam-beam-logo.png' : '/avalanche-avax-logo (1).png';
+  const spAssetLogo = asset === 'beam' ? '/spBEAM.png' : '/spAVAX.png';
   
   const exchangeRate = parseFloat(stats.exchangeRate);
   const spAmount = amount ? (parseFloat(amount) / exchangeRate).toFixed(4) : '0';
@@ -97,6 +99,7 @@ export function StakingCard({ asset }: StakingCardProps) {
                     MAX
                   </Button>
                   <div className="flex items-center gap-1.5 px-2 py-1 bg-muted rounded">
+                    <img src={assetLogo} alt={assetName} className="h-5 w-5 rounded-full" />
                     <span className="text-sm font-medium">{assetName}</span>
                   </div>
                 </div>
@@ -124,6 +127,7 @@ export function StakingCard({ asset }: StakingCardProps) {
                 />
                 <div className="absolute right-2 top-1/2 -translate-y-1/2">
                   <div className="flex items-center gap-1.5 px-2 py-1 bg-background rounded">
+                    <img src={spAssetLogo} alt={spAssetName} className="h-5 w-5 rounded-full" />
                     <span className="text-sm font-medium">{spAssetName}</span>
                   </div>
                 </div>

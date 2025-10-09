@@ -27,6 +27,8 @@ export function UnstakingCard({ asset }: UnstakingCardProps) {
   // Dynamic labels based on asset
   const assetName = asset === 'beam' ? 'BEAM' : 'AVAX';
   const spAssetName = asset === 'beam' ? 'spBEAM' : 'spAVAX';
+  const assetLogo = asset === 'beam' ? '/onbeam-beam-logo.png' : '/avalanche-avax-logo (1).png';
+  const spAssetLogo = asset === 'beam' ? '/spBEAM.png' : '/spAVAX.png';
   const { isConnected, connect, isConnecting } = useWallet();
   const { stats, requestUnlock, claimUnlock, getUnlockRequests, loading } = useContract({ asset });
   const [spAvaxAmount, setSpAvaxAmount] = useState('');
@@ -164,6 +166,7 @@ export function UnstakingCard({ asset }: UnstakingCardProps) {
                   MAX
                 </Button>
                 <div className="flex items-center gap-1.5 px-2 py-1 bg-muted rounded">
+                  <img src={spAssetLogo} alt={spAssetName} className="h-5 w-5 rounded-full" />
                   <span className="text-sm font-medium">{spAssetName}</span>
                 </div>
               </div>
@@ -175,7 +178,10 @@ export function UnstakingCard({ asset }: UnstakingCardProps) {
 
           <div className="p-4 rounded-lg bg-muted/50 space-y-1">
             <p className="text-sm text-muted-foreground">You will receive</p>
-            <p className="text-2xl font-bold">{avaxAmount} {assetName}</p>
+            <div className="flex items-center gap-2">
+              <img src={assetLogo} alt={assetName} className="h-6 w-6 rounded-full" />
+              <p className="text-2xl font-bold">{avaxAmount} {assetName}</p>
+            </div>
             <p className="text-xs text-muted-foreground">
               After 60 second unlock period
             </p>
