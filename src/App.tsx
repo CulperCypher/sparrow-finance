@@ -370,6 +370,15 @@ export default function App() {
             >
               Avalanche Faucet
             </a>
+            {' '}• Get test BEAM from{' '}
+            <a 
+              href="https://app.onbeam.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
+              BEAM Faucet
+            </a>
           </p>
         </div>
       </footer>
