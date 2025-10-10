@@ -380,6 +380,16 @@ export default function App() {
               BEAM Faucet
             </a>
           </p>
+          <p className="text-xs mt-4">
+            <a
+              href="https://docs.sparrowfinance.xyz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-foreground"
+            >
+              📚 Documentation
+            </a>
+          </p>
         </div>
       </footer>
     </div>
