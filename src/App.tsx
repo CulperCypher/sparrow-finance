@@ -387,7 +387,7 @@ export default function App() {
               rel="noopener noreferrer"
               className="underline hover:text-foreground"
             >
-              📚 Documentation
+              Documentation
             </a>
           </p>
         </div>
